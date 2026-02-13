@@ -6,266 +6,208 @@
 <title>Bizim Hikayemiz ❤️</title>
 
 <style>
-body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:linear-gradient(135deg,#ff4e8a,#ff9a9e);
-  color:white;
-  text-align:center;
-  overflow:hidden;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff4e8a, #ff9a9e);
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
 }
 
 /* INTRO */
-.intro{
-  position:fixed;
-  inset:0;
-  background:black;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:10;
+.intro {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
-#typeText{
-  font-size:28px;
-  border-right:3px solid white;
-  white-space:nowrap;
-  overflow:hidden;
+#typeText {
+  font-size: 28px;
+  border-right: 3px solid white;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-/* MAIN */
-.main{
-  opacity:0;
-  transition:opacity 1.5s ease;
-  margin-top:100px;
-  position:relative;
-  z-index:1;
+/* ANA İÇERİK */
+.container {
+  position: relative;
+  z-index: 1;
+  margin-top: 60px;
+  opacity: 0;
+  transition: opacity 1.5s ease;
 }
 
-/* FOTO */
-.bg-photo{
-  position:fixed;
-  inset:0;
-  background:url("foto.jpg") center/cover no-repeat;
-  filter:blur(8px) brightness(0.6);
-  z-index:-1;
+.counter { font-size: 24px; margin-top: 20px; }
+
+button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  background: white;
+  color: #ff4e8a;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* BUTTON */
-button{
-  padding:12px 25px;
-  border:none;
-  border-radius:30px;
-  background:white;
-  color:#ff4e8a;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:20px;
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.05);
-}
-
-/* ZARF */
-.envelope-container{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.8);
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  z-index:5;
-}
-
-.envelope{
-  width:240px;
-  height:160px;
-  background:#fff;
-  position:relative;
-  cursor:pointer;
-  border-radius:5px;
-}
-
-.envelope:before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  border-left:120px solid transparent;
-  border-right:120px solid transparent;
-  border-bottom:80px solid #ff4e8a;
-  transform-origin:top;
-  transition:transform .6s ease;
-}
-
-.envelope.open:before{
-  transform:rotateX(180deg);
-}
-
-.letter{
-  position:absolute;
-  top:20px;
-  left:15px;
-  width:210px;
-  height:120px;
-  background:#fff;
-  color:#ff4e8a;
-  padding:15px;
-  box-sizing:border-box;
-  font-size:14px;
-  transform:translateY(40px);
-  opacity:0;
-  transition:all .6s ease;
-  border-radius:5px;
-  overflow:auto;
-}
-
-.envelope.open .letter{
-  transform:translateY(-90px);
-  opacity:1;
-}
-
-/* CONFETTI */
-.confetti{
-  position:fixed;
-  width:8px;
-  height:8px;
-  top:0;
-  animation:fall 3s linear forwards;
-}
-
-@keyframes fall{
-  to{ transform:translateY(100vh) rotate(360deg); }
-}
+button:hover { transform: scale(1.05); }
 
 /* HEART */
-.heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:20px;
-  animation:floatUp 6s linear infinite;
-  opacity:0.7;
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
-@keyframes floatUp{
-  0%{ transform:translateY(0);}
-  100%{ transform:translateY(-110vh); opacity:0;}
+@keyframes floatUp {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* MODAL GALERİ */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.modal img {
+  max-width: 80%;
+  max-height: 60%;
+  border-radius: 20px;
+  box-shadow: 0 0 20px white;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 30px;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg-photo"></div>
-
 <!-- INTRO -->
 <div class="intro" id="intro">
   <div id="typeText"></div>
 </div>
 
-<!-- MAIN -->
-<div class="main" id="main">
+<div class="container" id="mainContent">
   <h1>14 Şubat Sevgililer Günümüz Kutlu Olsun ❤️</h1>
-  <p>Hayatımın en güzel hikayesi sensin...</p>
-  <button onclick="showEnvelope()">Sürpriz Mektup ✉️</button>
+  <p>Hayatımın en güzel parçası...</p>
+
+  <div class="counter" id="loveCounter"></div>
+
+  <button onclick="playMusic()">Müziği Başlat 🎵</button>
+  <br>
+  <button onclick="openGallery()">Sürpriz ❤️</button>
 </div>
 
-<!-- ZARF -->
-<div class="envelope-container" id="envelopeContainer">
-  <div class="envelope" id="envelope" onclick="openLetter()">
-    <div class="letter" id="letterText"></div>
-  </div>
+<!-- GALERİ -->
+<div class="modal" id="galleryModal">
+  <span class="closeBtn" onclick="closeGallery()">✖</span>
+  <img id="galleryImage" src="foto1.jpg">
 </div>
 
-<audio id="bgMusic">
+<audio id="bgMusic" loop>
   <source src="muzik.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-/* INTRO TYPEWRITER */
-const text="10 Aralık 2021'de başlayan bir hikaye...";
-let i=0;
-function typeWriter(){
-  if(i<text.length){
-    document.getElementById("typeText").innerHTML+=text.charAt(i);
+/* 🎬 TYPEWRITER INTRO */
+const introText = "10 Aralık 2021'de başlayan bir hikaye...";
+let i = 0;
+
+function typeWriter() {
+  if (i < introText.length) {
+    document.getElementById("typeText").innerHTML += introText.charAt(i);
     i++;
-    setTimeout(typeWriter,70);
+    setTimeout(typeWriter, 70);
   } else {
-    setTimeout(()=>{
-      const intro=document.getElementById("intro");
-      intro.remove(); // TAMAMEN SİLİYORUZ
-      document.getElementById("main").style.opacity=1;
-    },1000);
+    setTimeout(() => {
+      document.getElementById("intro").remove(); // tamamen siliyoruz
+      document.getElementById("mainContent").style.opacity = 1;
+    }, 1000);
   }
 }
+
 typeWriter();
 
-/* ZARF */
-function showEnvelope(){
-  document.getElementById("envelopeContainer").style.display="flex";
+/* ❤️ Sayaç */
+function updateCounter() {
+  const startDate = new Date("2021-12-10T00:00:00");
+  const now = new Date();
+  const diff = now - startDate;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const years = Math.floor(days / 365);
+  const remainingDays = days % 365;
+
+  document.getElementById("loveCounter").innerHTML =
+    `10 Aralık 2021'den beri <br><b>${years} yıl ${remainingDays} gün</b> birlikteyiz ❤️`;
 }
+setInterval(updateCounter, 1000);
+updateCounter();
 
-let opened=false;
-
-function openLetter(){
-  if(opened) return;
-  opened=true;
-
-  document.getElementById("envelope").classList.add("open");
-  typeLetter();
-  launchConfetti();
+/* 🎵 Müzik */
+function playMusic() {
   document.getElementById("bgMusic").play();
 }
 
-/* LETTER TYPE */
-const letterMessage=`Hayatımın en güzel tesadüfü ❤️
-
-10 Aralık 2021’den beri geçen her saniye
-seninle daha anlamlı.
-
-Sen benim huzurum,
-en güvenli limanım,
-en güzel duamsın.
-
-Seni sonsuz seviyorum.`;
-
-let j=0;
-function typeLetter(){
-  const el=document.getElementById("letterText");
-  if(j<letterMessage.length){
-    el.innerHTML+=letterMessage.charAt(j);
-    j++;
-    setTimeout(typeLetter,40);
-  }
-}
-
-/* CONFETTI */
-function launchConfetti(){
-  for(let k=0;k<120;k++){
-    const conf=document.createElement("div");
-    conf.classList.add("confetti");
-    conf.style.left=Math.random()*100+"vw";
-    conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    conf.style.animationDuration=(Math.random()*2+2)+"s";
-    document.body.appendChild(conf);
-    setTimeout(()=>conf.remove(),3000);
-  }
-}
-
-/* HEARTS */
-function createHeart(){
-  const heart=document.createElement("div");
+/* 💖 Kalpler */
+function createHeart() {
+  const heart = document.createElement("div");
   heart.classList.add("heart");
-  heart.innerHTML="❤️";
-  heart.style.left=Math.random()*100+"vw";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
   document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
+  setTimeout(() => heart.remove(), 6000);
 }
-setInterval(createHeart,400);
+setInterval(createHeart, 300);
+
+/* 📸 GALERİ */
+const images = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
+let current = 0;
+
+function openGallery() {
+  document.getElementById("galleryModal").style.display = "flex";
+  showImage();
+}
+
+function closeGallery() {
+  document.getElementById("galleryModal").style.display = "none";
+}
+
+function showImage() {
+  document.getElementById("galleryImage").src = images[current];
+}
+
+document.getElementById("galleryModal").addEventListener("click", function(e) {
+  if (e.target.id !== "galleryModal") return;
+  current = (current + 1) % images.length;
+  showImage();
+});
 
 </script>
 
