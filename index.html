@@ -102,6 +102,35 @@ button:hover { transform: scale(1.05); }
   font-size: 30px;
   cursor: pointer;
 }
+
+/* GİZLİ NOT */
+#loveQuestion {
+  display: none;
+  margin-top: 30px;
+}
+
+#loveQuestion button {
+  margin: 10px;
+}
+
+#noBtn {
+  position: relative;
+}
+
+/* EVET KUTLAMA */
+#celebration {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  color: white;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 20;
+  font-size: 40px;
+  text-align: center;
+}
 </style>
 </head>
 
@@ -121,12 +150,27 @@ button:hover { transform: scale(1.05); }
   <button onclick="playMusic()">Müziği Başlat 🎵</button>
   <br>
   <button onclick="openGallery()">Sürpriz ❤️</button>
+  <br>
+  <button onclick="openLoveQuestion()">Gizli Not 💌</button>
+
+  <!-- GİZLİ SORU -->
+  <div id="loveQuestion">
+    <h2>Barışalım mı? 🥺❤️</h2>
+    <button onclick="sayYes()">Evet 💖</button>
+    <button id="noBtn">Hayır 😏</button>
+  </div>
 </div>
 
 <!-- GALERİ -->
 <div class="modal" id="galleryModal">
   <span class="closeBtn" onclick="closeGallery()">✖</span>
   <img id="galleryImage" src="foto1.jpg">
+</div>
+
+<!-- EVET KUTLAMA -->
+<div id="celebration">
+  YUPPİİİ 🎉<br>
+  Seni Çok Seviyorum ❤️
 </div>
 
 <audio id="bgMusic" loop>
@@ -146,12 +190,11 @@ function typeWriter() {
     setTimeout(typeWriter, 70);
   } else {
     setTimeout(() => {
-      document.getElementById("intro").remove(); // tamamen siliyoruz
+      document.getElementById("intro").remove();
       document.getElementById("mainContent").style.opacity = 1;
     }, 1000);
   }
 }
-
 typeWriter();
 
 /* ❤️ Sayaç */
@@ -208,6 +251,45 @@ document.getElementById("galleryModal").addEventListener("click", function(e) {
   current = (current + 1) % images.length;
   showImage();
 });
+
+/* 💌 Gizli Not */
+function openLoveQuestion(){
+  document.getElementById("loveQuestion").style.display="block";
+}
+
+/* 😏 Hayır Kaçma */
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseenter", function(){
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
+
+/* 💖 EVET */
+function sayYes(){
+  document.getElementById("celebration").style.display="flex";
+  bigConfetti();
+}
+
+/* 🎉 DEV KONFETİ */
+function bigConfetti(){
+  for(let i=0;i<300;i++){
+    const conf=document.createElement("div");
+    conf.style.position="fixed";
+    conf.style.width="10px";
+    conf.style.height="10px";
+    conf.style.top="0";
+    conf.style.left=Math.random()*100+"vw";
+    conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    conf.style.animation=`fall ${Math.random()*3+2}s linear forwards`;
+    document.body.appendChild(conf);
+    setTimeout(()=>conf.remove(),5000);
+  }
+}
 
 </script>
 
