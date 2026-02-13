@@ -10,19 +10,14 @@ body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #ff4e8a, #ff9a9e);
-  color: white;
   text-align: center;
-  overflow-x: hidden;
+  color: white;
+  overflow: hidden;
 }
 
 h1 { margin-top: 60px; }
 
-.container { position: relative; z-index: 2; }
-
-.counter { font-size: 24px; margin-top: 20px; }
-
 button {
-  margin-top: 20px;
   padding: 12px 25px;
   border: none;
   border-radius: 30px;
@@ -30,8 +25,69 @@ button {
   color: #ff4e8a;
   font-weight: bold;
   cursor: pointer;
+  margin-top: 20px;
 }
 
+/* ❤️ ZARF */
+.envelope-container {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.envelope {
+  width: 220px;
+  height: 150px;
+  background: #fff;
+  position: relative;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.6);
+  transition: transform 0.5s;
+}
+
+.envelope:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-left: 110px solid transparent;
+  border-right: 110px solid transparent;
+  border-bottom: 75px solid #ff4e8a;
+  transform-origin: top;
+  transition: transform 0.6s ease;
+}
+
+.envelope.open:before {
+  transform: rotateX(180deg);
+}
+
+.letter {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  width: 200px;
+  height: 110px;
+  background: #fff;
+  color: #ff4e8a;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 0.6s ease;
+  border-radius: 5px;
+}
+
+.envelope.open .letter {
+  transform: translateY(-80px);
+  opacity: 1;
+}
+
+/* ❤️ Kalpler */
 .heart {
   position: fixed;
   bottom: -20px;
@@ -44,85 +100,38 @@ button {
   0% { transform: translateY(0); }
   100% { transform: translateY(-110vh); opacity: 0; }
 }
-
-/* MODAL GALERİ */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 5;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.modal img {
-  max-width: 80%;
-  max-height: 60%;
-  border-radius: 20px;
-  box-shadow: 0 0 20px white;
-}
-
-.closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 40px;
-  font-size: 30px;
-  cursor: pointer;
-}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>14 Şubat Sevgililer Günümüz Kutlu Olsun ❤️</h1>
-  <p>Hayatımın en güzel parçası...</p>
+<h1>14 Şubat Sevgililer Günümüz Kutlu Olsun ❤️</h1>
+<p>10 Aralık 2021'den beri hayatımın en güzel hikayesindeyim...</p>
 
-  <div class="counter" id="loveCounter"></div>
+<button onclick="showEnvelope()">Sürpriz Mektup ✉️</button>
 
-  <button onclick="playMusic()">Müziği Başlat 🎵</button>
-  <br>
-  <button onclick="openGallery()">Sürpriz ❤️</button>
+<div class="envelope-container" id="envelopeContainer">
+  <div class="envelope" id="envelope" onclick="openLetter()">
+    <div class="letter">
+      Hayatımın en güzel tesadüfü… ❤️<br><br>
+      10 Aralık 2021’den beri geçen her gün,
+      seninle daha anlamlı, daha güzel, daha özel.<br><br>
+      Sen benim en huzurlu yerimsin.<br>
+      Seni sonsuz seviyorum.
+    </div>
+  </div>
 </div>
-
-<!-- GALERİ -->
-<div class="modal" id="galleryModal">
-  <span class="closeBtn" onclick="closeGallery()">✖</span>
-  <img id="galleryImage" src="foto1.jpg">
-</div>
-
-<audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
 
 <script>
-// ❤️ Sayaç
-function updateCounter() {
-  const startDate = new Date("2021-12-10T00:00:00");
-  const now = new Date();
-  const diff = now - startDate;
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const years = Math.floor(days / 365);
-  const remainingDays = days % 365;
-
-  document.getElementById("loveCounter").innerHTML =
-    `10 Aralık 2021'den beri <br><b>${years} yıl ${remainingDays} gün</b> birlikteyiz ❤️`;
-}
-setInterval(updateCounter, 1000);
-updateCounter();
-
-// 🎵 Müzik
-function playMusic() {
-  document.getElementById("bgMusic").play();
+function showEnvelope() {
+  document.getElementById("envelopeContainer").style.display = "flex";
 }
 
-// 💖 Kalp Animasyonu
+function openLetter() {
+  document.getElementById("envelope").classList.toggle("open");
+}
+
+// 💖 Arka plan kalpleri
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
@@ -132,28 +141,6 @@ function createHeart() {
   setTimeout(() => heart.remove(), 6000);
 }
 setInterval(createHeart, 300);
-
-// 📸 GALERİ
-const images = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
-let current = 0;
-
-function openGallery() {
-  document.getElementById("galleryModal").style.display = "flex";
-  showImage();
-}
-
-function closeGallery() {
-  document.getElementById("galleryModal").style.display = "none";
-}
-
-function showImage() {
-  document.getElementById("galleryImage").src = images[current];
-}
-
-document.getElementById("galleryModal").addEventListener("click", function() {
-  current = (current + 1) % images.length;
-  showImage();
-});
 </script>
 
 </body>
