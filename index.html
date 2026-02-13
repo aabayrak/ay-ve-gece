@@ -23,7 +23,6 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
   z-index:10;
 }
 
@@ -38,7 +37,7 @@ body{
 .main{
   opacity:0;
   transition:opacity 2s ease;
-  margin-top:100px;
+  margin-top:80px;
 }
 
 button{
@@ -57,20 +56,20 @@ button{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.8);
+  background:rgba(0,0,0,0.85);
   justify-content:center;
   align-items:center;
   flex-direction:column;
 }
 
 .envelope{
-  width:220px;
-  height:150px;
+  width:240px;
+  height:160px;
   background:#fff;
   position:relative;
   cursor:pointer;
-  border-radius:5px;
-  box-shadow:0 0 25px rgba(255,255,255,0.6);
+  border-radius:6px;
+  box-shadow:0 0 25px rgba(255,255,255,0.7);
 }
 
 .envelope:before{
@@ -78,9 +77,9 @@ button{
   position:absolute;
   top:0;
   left:0;
-  border-left:110px solid transparent;
-  border-right:110px solid transparent;
-  border-bottom:75px solid #ff4e8a;
+  border-left:120px solid transparent;
+  border-right:120px solid transparent;
+  border-bottom:80px solid #ff4e8a;
   transform-origin:top;
   transition:transform .6s ease;
 }
@@ -92,9 +91,9 @@ button{
 .letter{
   position:absolute;
   top:20px;
-  left:10px;
-  width:200px;
-  height:110px;
+  left:15px;
+  width:210px;
+  height:120px;
   background:#fff;
   color:#ff4e8a;
   padding:15px;
@@ -103,12 +102,27 @@ button{
   transform:translateY(40px);
   opacity:0;
   transition:all .6s ease;
-  border-radius:5px;
+  border-radius:6px;
+  overflow:hidden;
 }
 
 .envelope.open .letter{
-  transform:translateY(-80px);
+  transform:translateY(-90px);
   opacity:1;
+}
+
+/* FOTO SLIDER */
+.gallery{
+  margin-top:40px;
+  display:none;
+}
+
+.gallery img{
+  width:220px;
+  height:auto;
+  border-radius:15px;
+  box-shadow:0 0 15px white;
+  transition:opacity .5s ease;
 }
 
 /* CONFETTI */
@@ -116,7 +130,6 @@ button{
   position:fixed;
   width:8px;
   height:8px;
-  background:yellow;
   top:0;
   animation:fall 3s linear forwards;
 }
@@ -157,17 +170,21 @@ button{
 
 <!-- ZARF -->
 <div class="envelope-container" id="envelopeContainer">
-  <div class="envelope" id="envelope" onclick="openLetter()">
+  <div class="envelope" id="envelope">
     <div class="letter" id="letterText"></div>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <img id="galleryImage" src="foto1.jpg">
   </div>
 </div>
 
 <audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="muzik.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// TYPEWRITER INTRO
+// INTRO TYPEWRITER
 const text="10 Aralık 2021'de başlayan bir hikaye...";
 let i=0;
 function typeWriter(){
@@ -186,17 +203,16 @@ function typeWriter(){
 typeWriter();
 
 // ZARF
-function showEnvelope(){
-  document.getElementById("envelopeContainer").style.display="flex";
-}
-
-function openLetter(){
-  document.getElementById("envelope").classList.toggle("open");
+let opened=false;
+document.getElementById("envelope").addEventListener("click",()=>{
+  if(opened) return;
+  opened=true;
+  document.getElementById("envelope").classList.add("open");
   typeLetter();
   launchConfetti();
-}
+});
 
-// LETTER TYPE EFFECT
+// LETTER TYPE
 const letterMessage=`Hayatımın en güzel tesadüfü… ❤️
 
 10 Aralık 2021’den beri geçen her saniye
@@ -215,12 +231,27 @@ function typeLetter(){
     el.innerHTML+=letterMessage.charAt(j);
     j++;
     setTimeout(typeLetter,40);
+  } else {
+    startGallery();
   }
+}
+
+// FOTO SLIDER
+const images=["foto1.jpg","foto2.jpg","foto3.jpg"];
+let current=0;
+
+function startGallery(){
+  const gallery=document.getElementById("gallery");
+  gallery.style.display="block";
+  setInterval(()=>{
+    current=(current+1)%images.length;
+    document.getElementById("galleryImage").src=images[current];
+  },2500);
 }
 
 // CONFETTI
 function launchConfetti(){
-  for(let k=0;k<100;k++){
+  for(let k=0;k<120;k++){
     const conf=document.createElement("div");
     conf.classList.add("confetti");
     conf.style.left=Math.random()*100+"vw";
@@ -241,6 +272,11 @@ function createHeart(){
   setTimeout(()=>heart.remove(),6000);
 }
 setInterval(createHeart,300);
+
+// ZARF GÖSTER
+function showEnvelope(){
+  document.getElementById("envelopeContainer").style.display="flex";
+}
 </script>
 
 </body>
