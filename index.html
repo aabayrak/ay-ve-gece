@@ -36,10 +36,22 @@ body{
 /* MAIN */
 .main{
   opacity:0;
-  transition:opacity 2s ease;
-  margin-top:80px;
+  transition:opacity 1.5s ease;
+  margin-top:100px;
+  position:relative;
+  z-index:1;
 }
 
+/* FOTO */
+.bg-photo{
+  position:fixed;
+  inset:0;
+  background:url("foto.jpg") center/cover no-repeat;
+  filter:blur(8px) brightness(0.6);
+  z-index:-1;
+}
+
+/* BUTTON */
 button{
   padding:12px 25px;
   border:none;
@@ -49,6 +61,11 @@ button{
   font-weight:bold;
   cursor:pointer;
   margin-top:20px;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
 }
 
 /* ZARF */
@@ -56,10 +73,11 @@ button{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.85);
+  background:rgba(0,0,0,0.8);
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  z-index:5;
 }
 
 .envelope{
@@ -68,8 +86,7 @@ button{
   background:#fff;
   position:relative;
   cursor:pointer;
-  border-radius:6px;
-  box-shadow:0 0 25px rgba(255,255,255,0.7);
+  border-radius:5px;
 }
 
 .envelope:before{
@@ -102,27 +119,13 @@ button{
   transform:translateY(40px);
   opacity:0;
   transition:all .6s ease;
-  border-radius:6px;
-  overflow:hidden;
+  border-radius:5px;
+  overflow:auto;
 }
 
 .envelope.open .letter{
   transform:translateY(-90px);
   opacity:1;
-}
-
-/* FOTO SLIDER */
-.gallery{
-  margin-top:40px;
-  display:none;
-}
-
-.gallery img{
-  width:220px;
-  height:auto;
-  border-radius:15px;
-  box-shadow:0 0 15px white;
-  transition:opacity .5s ease;
 }
 
 /* CONFETTI */
@@ -138,7 +141,7 @@ button{
   to{ transform:translateY(100vh) rotate(360deg); }
 }
 
-/* HEARTS */
+/* HEART */
 .heart{
   position:fixed;
   bottom:-20px;
@@ -156,6 +159,8 @@ button{
 
 <body>
 
+<div class="bg-photo"></div>
+
 <!-- INTRO -->
 <div class="intro" id="intro">
   <div id="typeText"></div>
@@ -170,21 +175,18 @@ button{
 
 <!-- ZARF -->
 <div class="envelope-container" id="envelopeContainer">
-  <div class="envelope" id="envelope">
+  <div class="envelope" id="envelope" onclick="openLetter()">
     <div class="letter" id="letterText"></div>
-  </div>
-
-  <div class="gallery" id="gallery">
-    <img id="galleryImage" src="foto1.jpg">
   </div>
 </div>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic">
   <source src="muzik.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// INTRO TYPEWRITER
+
+/* INTRO TYPEWRITER */
 const text="10 Aralık 2021'de başlayan bir hikaye...";
 let i=0;
 function typeWriter(){
@@ -194,26 +196,33 @@ function typeWriter(){
     setTimeout(typeWriter,70);
   } else {
     setTimeout(()=>{
-      document.getElementById("intro").style.opacity=0;
+      const intro=document.getElementById("intro");
+      intro.remove(); // TAMAMEN SİLİYORUZ
       document.getElementById("main").style.opacity=1;
-      document.getElementById("bgMusic").play();
     },1000);
   }
 }
 typeWriter();
 
-// ZARF
+/* ZARF */
+function showEnvelope(){
+  document.getElementById("envelopeContainer").style.display="flex";
+}
+
 let opened=false;
-document.getElementById("envelope").addEventListener("click",()=>{
+
+function openLetter(){
   if(opened) return;
   opened=true;
+
   document.getElementById("envelope").classList.add("open");
   typeLetter();
   launchConfetti();
-});
+  document.getElementById("bgMusic").play();
+}
 
-// LETTER TYPE
-const letterMessage=`Hayatımın en güzel tesadüfü… ❤️
+/* LETTER TYPE */
+const letterMessage=`Hayatımın en güzel tesadüfü ❤️
 
 10 Aralık 2021’den beri geçen her saniye
 seninle daha anlamlı.
@@ -231,25 +240,10 @@ function typeLetter(){
     el.innerHTML+=letterMessage.charAt(j);
     j++;
     setTimeout(typeLetter,40);
-  } else {
-    startGallery();
   }
 }
 
-// FOTO SLIDER
-const images=["foto1.jpg","foto2.jpg","foto3.jpg"];
-let current=0;
-
-function startGallery(){
-  const gallery=document.getElementById("gallery");
-  gallery.style.display="block";
-  setInterval(()=>{
-    current=(current+1)%images.length;
-    document.getElementById("galleryImage").src=images[current];
-  },2500);
-}
-
-// CONFETTI
+/* CONFETTI */
 function launchConfetti(){
   for(let k=0;k<120;k++){
     const conf=document.createElement("div");
@@ -262,7 +256,7 @@ function launchConfetti(){
   }
 }
 
-// HEARTS
+/* HEARTS */
 function createHeart(){
   const heart=document.createElement("div");
   heart.classList.add("heart");
@@ -271,12 +265,8 @@ function createHeart(){
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),6000);
 }
-setInterval(createHeart,300);
+setInterval(createHeart,400);
 
-// ZARF GÖSTER
-function showEnvelope(){
-  document.getElementById("envelopeContainer").style.display="flex";
-}
 </script>
 
 </body>
