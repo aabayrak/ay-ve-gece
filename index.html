@@ -1,32 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>Seni Seviyorum ❤️</title>
-  <style>
-    body {
-      background: pink;
-      font-family: "Arial", sans-serif;
-      text-align: center;
-      color: white;
-      padding: 50px;
-    }
-    h1 { font-size: 40px; margin-bottom: 10px; }
-    p { font-size: 20px; }
-    .heart {
-      font-size: 90px;
-      animation: beat 1s infinite;
-    }
-    @keyframes beat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bizim Hikayemiz ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff4e8a, #ff9a9e);
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+h1 {
+  margin-top: 60px;
+  font-size: 40px;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+.counter {
+  font-size: 28px;
+  margin-top: 20px;
+}
+
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+button {
+  margin-top: 30px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  background: white;
+  color: #ff4e8a;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+}
+</style>
 </head>
+
 <body>
-    <div class="heart">❤️</div>
-    <h1>14 Şubat Sevgililer Günümüz Kutlu Olsun!</h1>
-    <p>Hayatımın en güzel parçası, seni çok seviyorum ❤️</p>
-    <p>Her günüm seninle özel 🎈</p>
+
+<div class="container">
+  <h1>14 Şubat Sevgililer Günümüz Kutlu Olsun ❤️</h1>
+  <p>Hayatımın en güzel parçası...</p>
+
+  <div class="counter" id="loveCounter"></div>
+
+  <button onclick="playMusic()">Müziği Başlat 🎵</button>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ❤️ Sayaç
+function updateCounter() {
+  const startDate = new Date("2021-12-10T00:00:00");
+  const now = new Date();
+  const diff = now - startDate;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const years = Math.floor(days / 365);
+  const remainingDays = days % 365;
+
+  document.getElementById("loveCounter").innerHTML =
+    `10 Aralık 2021'den beri <br><b>${years} yıl ${remainingDays} gün</b> birlikteyiz ❤️`;
+}
+
+setInterval(updateCounter, 1000);
+updateCounter();
+
+// 🎵 Müzik
+function playMusic() {
+  document.getElementById("bgMusic").play();
+}
+
+// 💖 Kalp Animasyonu
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 15 + "px";
+  heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 6000);
+}
+
+setInterval(createHeart, 300);
+</script>
+
 </body>
 </html>
